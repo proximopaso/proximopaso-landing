@@ -25,6 +25,8 @@
   --bg-light: #ECEAE6;
   --text-gray: #475569;
   --white: #ffffff;
+  --warning: #BB1A54;
+  --forms: #0C60740D;
 
   /* Transparencias del Color Primario */
   --primary-10: rgba(12, 96, 116, 0.10);
@@ -45,4 +47,15 @@
   --white-60: rgba(255, 255, 255, 0.60);
   --white-80: rgba(255, 255, 255, 0.80);
   --white-90: rgba(255, 255, 255, 0.90);
+
+  /* --- SISTEMA DE ESPACIADO (Basado en 4px) --- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 40px;
+
+  /* --- BORDES --- */
+  --radius-md: 12px;
 }
