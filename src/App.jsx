@@ -1,4 +1,153 @@
 import './App.css'
+import {
+  PillOption,
+  QuestionLabel,
+  RadioOption, RatingOption,
+  SelectInput,
+  TextInput
+} from "./features/forms/components/FormsComponents.jsx";
+import {useState} from "react";
+
+
+export const SurveyForm = () => {
+  // Estado completo para las 12 preguntas
+  const [formData, setFormData] = useState({
+    email: '',
+    universidad: '',
+    ciclo: '',
+    situacion: '',
+    dificultades: [], // Array porque son checkboxes
+    preparacion: '',
+    usarias: '',
+    encontrar: [], // Array porque son checkboxes
+    pagarias: '',
+    cuantoPagarias: '',
+    sugerencias: '',
+    prototipo: ''
+  });
+
+  // Handler para inputs de texto, selects y radios
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // Handler especial para los Checkboxes (Píldoras)
+  const handleCheckboxChange = (e) => {
+    const { name, value, checked } = e.target;
+    setFormData(prev => {
+      const currentList = prev[name];
+      if (checked) {
+        return { ...prev, [name]: [...currentList, value] }; // Añade a la lista
+      } else {
+        return { ...prev, [name]: currentList.filter(item => item !== value) }; // Quita de la lista
+      }
+    });
+  };
+
+  // Imprimir en consola para que veas cómo se guarda la data al enviar
+  const handleSubmit = () => {
+    console.log("Datos listos para enviar al backend:", formData);
+    alert("¡Respuestas registradas! Revisa la consola.");
+  };
+
+  return (
+      <div style={{ alignSelf: 'stretch', display: 'flex', flexDirection: 'column', gap: 'var(--space-2xl)' }}>
+
+        {/* Q1, Q2, Q3 */}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <TextInput label="1. Por favor bríndanos tu correo electrónico" placeholder="tu@correo.com" name="email" value={formData.email} onChange={handleChange} />
+
+          <SelectInput label="2. ¿A qué universidad perteneces?" name="universidad" value={formData.universidad} onChange={handleChange} options={['UTP', 'UPN', 'UCV', 'Otras']} />
+
+          <SelectInput label="3. ¿En qué ciclo te encuentras?" name="ciclo" value={formData.ciclo} onChange={handleChange} options={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} />
+
+          {/* Q4 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)'}}>
+            <QuestionLabel text="4. Actualmente tú:" />
+            {['Solo estudias', 'Buscas prácticas', 'Buscas trabajo', 'Trabajo y estudio', 'Ya tengo prácticas'].map(opt => (
+                <RadioOption key={opt} text={opt} name="situacion" value={opt} checked={formData.situacion === opt} onChange={handleChange} />
+            ))}
+          </div>
+        </div>
+
+        {/* Q5 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+          <QuestionLabel text="5. ¿Qué es lo más difícil al buscar prácticas o empleo?" />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-md)' }}>
+            {['No tengo experiencia', 'No sé hacer un buen CV', 'No encuentro oportunidades', 'No paso entrevistas', 'No tengo contactos', 'No sé por dónde empezar', 'Me piden demasiada experiencia'].map(opt => (
+                <PillOption key={opt} text={opt} name="dificultades" value={opt} checked={formData.dificultades.includes(opt)} onChange={handleCheckboxChange} />
+            ))}
+          </div>
+        </div>
+
+        {/* Q6 & Q7 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+            <QuestionLabel text="6. ¿Sientes que tu universidad te prepara bien?" />
+            {['Sí, definitivamente', 'Tal vez', 'No'].map(opt => (
+                <RadioOption key={opt} text={opt} name="preparacion" value={opt} checked={formData.preparacion === opt} onChange={handleChange} />
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+            <QuestionLabel text="7. ¿Usarías esta plataforma paso a paso?" />
+            {['Sí, definitivamente', 'Tal vez', 'No'].map(opt => (
+                <RadioOption key={opt} text={opt} name="usarias" value={opt} checked={formData.usarias === opt} onChange={handleChange} />
+            ))}
+          </div>
+        </div>
+
+        {/* Q8 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-md)' }}>
+          <QuestionLabel text="8. ¿Qué te gustaría encontrar en la plataforma?" />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-md)' }}>
+            {['Guías para CV', 'Entrevistas', 'Ofertas prácticas', 'Mentorías', 'LinkedIn', 'Contacto empresas', 'Cursos cortos'].map(opt => (
+                <PillOption key={opt} text={opt} name="encontrar" value={opt} checked={formData.encontrar.includes(opt)} onChange={handleCheckboxChange} />
+            ))}
+          </div>
+        </div>
+
+        {/* Q9 & Q10 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+            <QuestionLabel text="9. ¿Pagarías por mejorar?" />
+            {['Sí', 'Solo si es económico', 'Solo si es gratuito'].map(opt => (
+                <RadioOption key={opt} text={opt} name="pagarias" value={opt} checked={formData.pagarias === opt} onChange={handleChange} />
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
+            <QuestionLabel text="10. ¿Cuánto pagarías mensual?" />
+            {['S/10–15', 'S/20–25', 'S/30–40', 'No pagaría'].map(opt => (
+                <RadioOption key={opt} text={opt} name="cuantoPagarias" value={opt} checked={formData.cuantoPagarias === opt} onChange={handleChange} />
+            ))}
+          </div>
+        </div>
+
+        {/* Q11 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)'}} >
+          <TextInput label="11. ¿Qué debería tener Próximo Paso para que realmente la uses?" name="sugerencias" placeholder="Tus sugerencias..." value={formData.sugerencias} onChange={handleChange} isTextArea={true} />
+        </div>
+
+        {/* Q12 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)' }}>
+          <QuestionLabel text="12. ¿Te gustó el prototipo?" />
+          <div style={{ maxWidth: 400, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            {['No', 'Neutral', 'Sí', '¡Me encantó!'].map(opt => (
+                <RatingOption key={opt} label={opt} isActive={formData.prototipo === opt} onClick={() => handleChange({ target: { name: 'prototipo', value: opt }})} />
+            ))}
+          </div>
+        </div>
+
+        {/* SUBMIT BUTTON */}
+        <button onClick={handleSubmit} style={{ width: '100%', padding: '20px', background: 'var(--primary)', borderRadius: 16, border: 'none', color: 'var(--white)', fontSize: 20, fontWeight: '900', cursor: 'pointer', boxShadow: '0px 10px 25px -5px rgba(0,0,0,0.1)' }}>
+          Enviar mis respuestas
+        </button>
+
+      </div>
+  );
+};
 
 function App() {
   return (
@@ -148,6 +297,28 @@ function App() {
                 <div style={{ color: 'var(--accent)', fontSize: 30, fontWeight: '900' }}>S/ 19.90</div>
                 <div style={{ color: 'var(--white-60)', fontSize: 12, fontWeight: '700', textTransform: 'uppercase' }}>Suscripción Mensual</div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FORMS SECTION */}
+        <section className="section-padding" style={{width: '100%', background: 'var(--white)', padding: '96px 5%', display: 'flex', justifyContent: 'center' }}>
+          <div style={{width: 900, paddingTop: 64, paddingBottom: 80, paddingLeft: 64, paddingRight: 64, background: 'var(--forms)', borderRadius: 48, outline: '1px rgba(12, 96, 116, 0.10) solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 48, display: 'inline-flex'}}>
+            {/* FORMS TITLE */}
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 16, display: 'flex'}}>
+              <div style={{paddingLeft: 16, paddingRight: 16, paddingTop: 4, paddingBottom: 4, background: 'var(--warning)', borderRadius: 9999, justifyContent: 'center', alignItems: 'flex-start', display: 'inline-flex'}}>
+                <div style={{width: 107, height: 15, textAlign: 'center', justifyContent: 'center', display: 'flex', flexDirection: 'column', color: 'white', fontSize: 10,fontWeight: '700', textTransform: 'uppercase'}}>Cuestionario</div>
+              </div>
+              <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', display: 'flex'}}>
+                <h2 style={{display: 'flex', flexDirection: 'column', color: 'var(--primary)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: '900', margin: 0}}>Ayúdanos a conocerte mejor</h2>
+              </div>
+              <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', display: 'flex'}}>
+                <h3 style={{display: 'flex', flexDirection: 'column', color: 'var(--text-gray)', fontSize: 16, fontWeight: '400'}}>Tus respuestas nos permiten personalizar tu experiencia en Próximo Paso.</h3>
+              </div>
+            </div>
+            {/* FORMS BODY */}
+            <div style={{ alignSelf: 'stretch', display: 'flex', flexDirection: 'column', gap: 'var(--space-2xl)' }}>
+              <SurveyForm></SurveyForm>
             </div>
           </div>
         </section>
