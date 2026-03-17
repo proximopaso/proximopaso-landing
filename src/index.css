@@ -1,0 +1,48 @@
+*{
+  margin: 0;
+  padding: 0;
+
+.nav-links { display: flex; gap: 40px; align-items: center; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; width: 100%; }
+  .flex-col-mobile { display: flex; justify-content: space-between; gap: 40px; }
+  .hero-container { display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; }
+  .hero-text { flex: 1 1 500px; }
+  .hero-card { flex: 1 1 350px; max-width: 450px; }
+  .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; } /* Oculta links en móvil para simplificar */
+    .flex-col-mobile { flex-direction: column; align-items: center; text-align: center; }
+    .hero-text h1 { font-size: 48px !important; line-height: 1.1 !important; }
+    .section-padding { padding: 48px 24px !important; }
+  }
+}
+:root {
+  /* Paleta Base */
+  --primary: #0C6074;
+  --accent: #F9A948;
+  --accent-blue: #60A5FA;
+  --bg-light: #ECEAE6;
+  --text-gray: #475569;
+  --white: #ffffff;
+
+  /* Transparencias del Color Primario */
+  --primary-10: rgba(12, 96, 116, 0.10);
+  --primary-60: rgba(12, 96, 116, 0.60);
+
+  /* Transparencias del Fondo Claro (bg-light) */
+  --bg-light-30: rgba(236, 234, 230, 0.30);
+  --bg-light-70: rgba(236, 234, 230, 0.70);
+  --bg-light-80: rgba(236, 234, 230, 0.80);
+  --bg-light-90: rgba(236, 234, 230, 0.90);
+
+  /* Transparencias de Blanco */
+  --white-05: rgba(255, 255, 255, 0.05);
+  --white-10: rgba(255, 255, 255, 0.10);
+  --white-20: rgba(255, 255, 255, 0.20);
+  --white-30: rgba(255, 255, 255, 0.30);
+  --white-40: rgba(255, 255, 255, 0.40);
+  --white-60: rgba(255, 255, 255, 0.60);
+  --white-80: rgba(255, 255, 255, 0.80);
+  --white-90: rgba(255, 255, 255, 0.90);
+}
