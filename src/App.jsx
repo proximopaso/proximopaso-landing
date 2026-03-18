@@ -6,67 +6,40 @@ import {
   SelectInput,
   TextInput
 } from "./features/forms/components/FormsComponents.jsx";
-import {useState} from "react";
+
+import {useSurveyForm} from "./features/forms/hooks/useSurveryForm.js";
 
 
 export const SurveyForm = () => {
-  // Estado completo para las 12 preguntas
-  const [formData, setFormData] = useState({
-    email: '',
-    universidad: '',
-    ciclo: '',
-    situacion: '',
-    dificultades: [], // Array porque son checkboxes
-    preparacion: '',
-    usarias: '',
-    encontrar: [], // Array porque son checkboxes
-    pagarias: '',
-    cuantoPagarias: '',
-    sugerencias: '',
-    prototipo: ''
-  });
-
-  // Handler para inputs de texto, selects y radios
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Handler especial para los Checkboxes (Píldoras)
-  const handleCheckboxChange = (e) => {
-    const { name, value, checked } = e.target;
-    setFormData(prev => {
-      const currentList = prev[name];
-      if (checked) {
-        return { ...prev, [name]: [...currentList, value] }; // Añade a la lista
-      } else {
-        return { ...prev, [name]: currentList.filter(item => item !== value) }; // Quita de la lista
-      }
-    });
-  };
+  const { formData, handleChange, handleCheckboxChange, submitForm, loading } = useSurveyForm();
 
   // Imprimir en consola para que veas cómo se guarda la data al enviar
-  const handleSubmit = () => {
-    console.log("Datos listos para enviar al backend:", formData);
-    alert("¡Respuestas registradas! Revisa la consola.");
+  const handleSubmit = async () => {
+    try {
+      await submitForm();
+      alert("¡Tus respuestas han sido registradas!");
+      // Opcional: window.location.reload(); o setFormData(initialSurveyState);
+    } catch (err) {
+      alert("Error al enviar: " + err.message);
+    }
   };
+
 
   return (
       <div style={{ alignSelf: 'stretch', display: 'flex', flexDirection: 'column', gap: 'var(--space-2xl)' }}>
-
         {/* Q1, Q2, Q3 */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <TextInput label="1. Por favor bríndanos tu correo electrónico" placeholder="tu@correo.com" name="email" value={formData.email} onChange={handleChange} />
 
-          <SelectInput label="2. ¿A qué universidad perteneces?" name="universidad" value={formData.universidad} onChange={handleChange} options={['UTP', 'UPN', 'UCV', 'Otras']} />
+          <SelectInput label="2. ¿A qué universidad perteneces?" name="university" value={formData.university} onChange={handleChange} options={['UTP']} />
 
-          <SelectInput label="3. ¿En qué ciclo te encuentras?" name="ciclo" value={formData.ciclo} onChange={handleChange} options={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} />
+          <SelectInput label="3. ¿En qué ciclo te encuentras?" name="cycle" value={formData.cycle} onChange={handleChange} options={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']} />
 
           {/* Q4 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)'}}>
             <QuestionLabel text="4. Actualmente tú:" />
             {['Solo estudias', 'Buscas prácticas', 'Buscas trabajo', 'Trabajo y estudio', 'Ya tengo prácticas'].map(opt => (
-                <RadioOption key={opt} text={opt} name="situacion" value={opt} checked={formData.situacion === opt} onChange={handleChange} />
+                <RadioOption key={opt} text={opt} name="current_status" value={opt} checked={formData.current_status === opt} onChange={handleChange} />
             ))}
           </div>
         </div>
@@ -76,7 +49,7 @@ export const SurveyForm = () => {
           <QuestionLabel text="5. ¿Qué es lo más difícil al buscar prácticas o empleo?" />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-md)' }}>
             {['No tengo experiencia', 'No sé hacer un buen CV', 'No encuentro oportunidades', 'No paso entrevistas', 'No tengo contactos', 'No sé por dónde empezar', 'Me piden demasiada experiencia'].map(opt => (
-                <PillOption key={opt} text={opt} name="dificultades" value={opt} checked={formData.dificultades.includes(opt)} onChange={handleCheckboxChange} />
+                <PillOption key={opt} text={opt} name="biggest_difficulty" value={opt} checked={formData.biggest_difficulty.includes(opt)} onChange={handleCheckboxChange} />
             ))}
           </div>
         </div>
@@ -86,14 +59,14 @@ export const SurveyForm = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
             <QuestionLabel text="6. ¿Sientes que tu universidad te prepara bien?" />
             {['Sí, definitivamente', 'Tal vez', 'No'].map(opt => (
-                <RadioOption key={opt} text={opt} name="preparacion" value={opt} checked={formData.preparacion === opt} onChange={handleChange} />
+                <RadioOption key={opt} text={opt} name="university_preparation" value={opt} checked={formData.university_preparation === opt} onChange={handleChange} />
             ))}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
             <QuestionLabel text="7. ¿Usarías esta plataforma paso a paso?" />
             {['Sí, definitivamente', 'Tal vez', 'No'].map(opt => (
-                <RadioOption key={opt} text={opt} name="usarias" value={opt} checked={formData.usarias === opt} onChange={handleChange} />
+                <RadioOption key={opt} text={opt} name="would_use_platform" value={opt} checked={formData.would_use_platform === opt} onChange={handleChange} />
             ))}
           </div>
         </div>
@@ -103,7 +76,7 @@ export const SurveyForm = () => {
           <QuestionLabel text="8. ¿Qué te gustaría encontrar en la plataforma?" />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-md)' }}>
             {['Guías para CV', 'Entrevistas', 'Ofertas prácticas', 'Mentorías', 'LinkedIn', 'Contacto empresas', 'Cursos cortos'].map(opt => (
-                <PillOption key={opt} text={opt} name="encontrar" value={opt} checked={formData.encontrar.includes(opt)} onChange={handleCheckboxChange} />
+                <PillOption key={opt} text={opt} name="desired_features" value={opt} checked={formData.desired_features.includes(opt)} onChange={handleCheckboxChange} />
             ))}
           </div>
         </div>
@@ -113,21 +86,21 @@ export const SurveyForm = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
             <QuestionLabel text="9. ¿Pagarías por mejorar?" />
             {['Sí', 'Solo si es económico', 'Solo si es gratuito'].map(opt => (
-                <RadioOption key={opt} text={opt} name="pagarias" value={opt} checked={formData.pagarias === opt} onChange={handleChange} />
+                <RadioOption key={opt} text={opt} name="willing_to_pay" value={opt} checked={formData.willing_to_pay === opt} onChange={handleChange} />
             ))}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
             <QuestionLabel text="10. ¿Cuánto pagarías mensual?" />
             {['S/10–15', 'S/20–25', 'S/30–40', 'No pagaría'].map(opt => (
-                <RadioOption key={opt} text={opt} name="cuantoPagarias" value={opt} checked={formData.cuantoPagarias === opt} onChange={handleChange} />
+                <RadioOption key={opt} text={opt} name="monthly_payment_range" value={opt} checked={formData.monthly_payment_range === opt} onChange={handleChange} />
             ))}
           </div>
         </div>
 
         {/* Q11 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)'}} >
-          <TextInput label="11. ¿Qué debería tener Próximo Paso para que realmente la uses?" name="sugerencias" placeholder="Tus sugerencias..." value={formData.sugerencias} onChange={handleChange} isTextArea={true} />
+          <TextInput label="11. ¿Qué debería tener Próximo Paso para que realmente la uses?" name="suggestions" placeholder="Tus sugerencias..." value={formData.suggestions} onChange={handleChange} isTextArea={true} />
         </div>
 
         {/* Q12 */}
@@ -135,14 +108,18 @@ export const SurveyForm = () => {
           <QuestionLabel text="12. ¿Te gustó el prototipo?" />
           <div style={{ maxWidth: 400, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             {['No', 'Neutral', 'Sí', '¡Me encantó!'].map(opt => (
-                <RatingOption key={opt} label={opt} isActive={formData.prototipo === opt} onClick={() => handleChange({ target: { name: 'prototipo', value: opt }})} />
+                <RatingOption key={opt} label={opt} isActive={formData.prototype_rating === opt} onClick={() => handleChange({ target: { name: 'prototype_rating', value: opt }})} />
             ))}
           </div>
         </div>
 
         {/* SUBMIT BUTTON */}
-        <button onClick={handleSubmit} style={{ width: '100%', padding: '20px', background: 'var(--primary)', borderRadius: 16, border: 'none', color: 'var(--white)', fontSize: 20, fontWeight: '900', cursor: 'pointer', boxShadow: '0px 10px 25px -5px rgba(0,0,0,0.1)' }}>
-          Enviar mis respuestas
+        <button
+            onClick={handleSubmit}
+            disabled={loading}
+            style={{ width: '100%', padding: '20px', background: 'var(--primary)', borderRadius: 16, border: 'none', color: 'var(--white)', fontSize: 20, fontWeight: '900', cursor: 'pointer', boxShadow: '0px 10px 25px -5px rgba(0,0,0,0.1)', opacity: loading ? 0.7 : 1 }}
+        >
+          {loading ? "Enviando..." : "Enviar mis respuestas"}
         </button>
 
       </div>
@@ -180,7 +157,7 @@ function App() {
               <h1 style={{ color: 'var(--white)', fontSize: 'clamp(48px, 6vw, 72px)', fontWeight: '900', lineHeight: '1.1', margin: 0 }}>
                 Erradicando el <br/><span style={{ color: 'var(--accent)', textDecoration: 'underline' }}>Desempleo</span><br/>Juvenil en el Perú
               </h1>
-              <p style={{ color: 'var(--bg-light-90)', fontSize: 20, maxWidth: 600, margin: 0 }}>Transformamos el talento de la universidad UTP en carreras profesionales de éxito desde el primer día.</p>
+              <p style={{ color: 'var(--bg-light-90)', fontSize: 20, maxWidth: 600, margin: 0 }}>Transformamos el talento de la university UTP en carreras profesionales de éxito desde el primer día.</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginTop: 16 }}>
                 <button style={{ padding: '16px 32px', background: 'var(--accent)', borderRadius: 12, border: 'none', color: 'var(--white)', fontSize: 18, fontWeight: '900', cursor: 'pointer' }}>Únete por S/ 19.90</button>
                 <span style={{ color: 'var(--bg-light-70)', fontSize: 14 }}>*Inversión para tu futuro</span>
@@ -192,7 +169,7 @@ function App() {
               <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
                 {[1,2,3,4,5].map(i => <div key={i} style={{ width: 12, height: 12, background: 'var(--accent)', clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }}/>)}
               </div>
-              <p style={{ color: 'var(--white)', fontSize: 18, fontWeight: '500', lineHeight: 1.5, margin: '0 0 24px 0' }}>"Gracias a Próximo Paso conseguí mi primer empleo en el 4to ciclo. La mentoría fue clave."</p>
+              <p style={{ color: 'var(--white)', fontSize: 18, fontWeight: '500', lineHeight: 1.5, margin: '0 0 24px 0' }}>"Gracias a Próximo Paso conseguí mi primer empleo en el 4to cycle. La mentoría fue clave."</p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <img style={{ width: 48, height: 48, borderRadius: '50%', border: '2px solid var(--accent)' }} src="https://placehold.co/48x48" alt="Maria" />
                 <div>
@@ -226,7 +203,7 @@ function App() {
           <div style={{ maxWidth: 1280, width: '100%', display: 'flex', flexDirection: 'column', gap: 64 }}>
             <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
               <h2 style={{ color: 'var(--primary)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: '900', margin: 0 }}>¿Por qué Próximo Paso?</h2>
-              <p style={{ color: 'var(--text-gray)', fontSize: 18, maxWidth: 600, margin: 0 }}>Construye tu empleabilidad desde el primer ciclo, no esperes a graduarte</p>
+              <p style={{ color: 'var(--text-gray)', fontSize: 18, maxWidth: 600, margin: 0 }}>Construye tu empleabilidad desde el primer cycle, no esperes a graduarte</p>
             </div>
 
             <div className="grid-3">
