@@ -5,7 +5,9 @@ import { PricingSection } from "./features/forms/pricing/PricingSection.jsx";
 
 const GlobeIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>;
 
-const LogoIcon = () => <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#F9A948" /><path d="M11 10H17C19.2091 10 21 11.7909 21 14C21 16.2091 19.2091 18 17 18H14V22H11V10ZM14 15H17C17.5523 15 18 14.5523 18 14C18 13.4477 17.5523 13 17 13H14V15Z" fill="#0C6074" /></svg>;
+const LogoIcon = () => (
+  <img src="/proximopaso-logo-cuadrado.jpeg" alt="Próximo Paso Logo" style={{ width: 32, height: 32, borderRadius: 4, objectFit: 'cover' }} onError={(e) => { e.target.onerror = null; e.target.src = "/proximopaso-logo-cuadrado.jpg"; }} />
+);
 
 const StrategyIcon = () => <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M0 23.75V6.25H7.5V3.75L11.25 0L15 3.75V11.25H22.5V23.75H0ZM2.5 21.25H5V18.75H2.5V21.25ZM2.5 16.25H5V13.75H2.5V16.25ZM2.5 11.25H5V8.75H2.5V11.25ZM10 21.25H12.5V18.75H10V21.25ZM10 16.25H12.5V13.75H10V16.25ZM10 11.25H12.5V8.75H10V11.25ZM10 6.25H12.5V3.75H10V6.25ZM17.5 21.25H20V18.75H17.5V21.25ZM17.5 16.25H20V13.75H17.5V16.25Z" fill="#0C6074" />
@@ -177,7 +179,7 @@ function App() {
             </h1>
             <p style={{ color: 'var(--bg-light-90)', fontSize: 20, maxWidth: 500, margin: 0, lineHeight: 1.5 }}>Transformamos el talento de la universidad UTP en carreras profesionales de éxito desde el primer día.</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginTop: 16 }}>
-              <button style={{ padding: '16px 32px', background: 'var(--accent)', borderRadius: 12, border: 'none', color: 'var(--white)', fontSize: 18, fontWeight: '900', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>Únete por S/ 19.90 →</button>
+              <button onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="cta-button" style={{ padding: '16px 32px', background: 'var(--accent)', borderRadius: 12, border: 'none', color: 'var(--white)', fontSize: 18, fontWeight: '900', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>Únete por S/ 19.90 →</button>
               <span style={{ color: 'var(--bg-light-70)', fontSize: 14 }}>*Inversión para tu futuro</span>
             </div>
           </div>
@@ -388,15 +390,10 @@ function App() {
 
       {/* Scroll to Top Button */}
       <button 
+        className="scroll-to-top"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
         style={{ 
-          position: 'fixed', bottom: 40, right: 40, width: 48, height: 48, 
-          borderRadius: '50%', background: 'var(--accent)', color: 'white', 
-          display: 'flex', justifyContent: 'center', alignItems: 'center', 
-          cursor: 'pointer', zIndex: 1000, border: 'none', 
-          boxShadow: '0 4px 12px rgba(0,0,0,0.2)', 
           opacity: showScroll ? 1 : 0, pointerEvents: showScroll ? 'auto' : 'none',
-          transition: 'all 0.3s ease'
         }}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
