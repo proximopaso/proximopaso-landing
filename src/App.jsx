@@ -1,5 +1,6 @@
 import './App.css'
 import {SurveyForm} from "./features/forms/components/SurveyForm.jsx";
+import { PricingSection } from "./features/forms/pricing/PricingSection.jsx";
 
 function App() {
   return (
@@ -152,6 +153,8 @@ function App() {
             </div>
           </div>
         </section>
+
+        <PricingSection />
 
         {/* FORMS SECTION */}
         <section className="section-padding" style={{width: '100%', background: 'var(--white)', padding: '96px 5%', display: 'flex', justifyContent: 'center' }}>
