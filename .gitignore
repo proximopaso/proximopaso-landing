@@ -23,5 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# Local env file (named by config)
-/src/lib/config.js
+# Local env file
+.env
