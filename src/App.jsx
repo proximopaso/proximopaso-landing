@@ -33,19 +33,24 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [heroBgIndex, setHeroBgIndex] = useState(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
-  const [showScroll, setShowScroll] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {
     const checkScrollTop = () => {
-      if (window.scrollY > 400) {
+      const scrolled = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrolled > 400) {
         setShowScroll(true);
       } else {
         setShowScroll(false);
       }
     };
     window.addEventListener('scroll', checkScrollTop);
-    return () => window.removeEventListener('scroll', checkScrollTop);
+    document.addEventListener('scroll', checkScrollTop, true); // Mobile fallback
+    return () => {
+      window.removeEventListener('scroll', checkScrollTop);
+      document.removeEventListener('scroll', checkScrollTop, true);
+    };
   }, []);
 
   const heroImages = [
@@ -107,7 +112,7 @@ function App() {
   };
 
   return (
-    <div style={{ width: '100%', minHeight: '100vh', background: 'var(--bg-light)', overflowX: 'hidden', fontFamily: 'Lexend, sans-serif' }}>
+    <div style={{ width: '100%', minHeight: '100vh', background: 'var(--bg-light)', fontFamily: 'Lexend, sans-serif' }}>
       {/* NAVBAR */}
       <nav style={{ width: '100%', padding: '16px 5%', background: 'var(--primary)', borderBottom: '1px var(--white-10) solid', display: 'flex', justifyContent: 'center', position: 'sticky', top: 0, zIndex: 101, backdropFilter: 'blur(6px)' }}>
         <div style={{ width: '100%', maxWidth: 1280, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -153,18 +158,18 @@ function App() {
       {/* HERO SECTION */}
       <section className="section-padding" style={{ width: '100%', background: 'var(--primary)', padding: '96px 5%', position: 'relative', display: 'flex', justifyContent: 'center', overflow: 'hidden' }}>
         {heroImages.map((src, index) => (
-          <img 
+          <img
             key={src}
-            style={{ 
-              position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', 
-              objectFit: 'cover', 
-              objectPosition: '80% center', 
+            style={{
+              position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+              objectFit: 'cover',
+              objectPosition: '80% center',
               opacity: index === heroBgIndex ? 0.8 : 0,
               transition: 'opacity 1.5s ease-in-out'
-            }} 
-            src={src} 
-            alt={`Hero background ${index + 1}`} 
-            onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/1280x820" }} 
+            }}
+            src={src}
+            alt={`Hero background ${index + 1}`}
+            onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/1280x820" }}
           />
         ))}
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(90deg, #094b5a 0%, rgba(9, 75, 90, 0.8) 40%, transparent 100%)', zIndex: 1, pointerEvents: 'none' }} />
@@ -193,15 +198,15 @@ function App() {
               <div style={{ opacity: isTransitioning ? 0 : 1, transform: isTransitioning ? 'scale(0.96)' : 'scale(1)', transition: 'all 0.25s ease' }}>
                 <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
                   {[1, 2, 3, 4, 5].map(i => {
-                     const isHalf = testimonials[testimonialIndex].stars === i - 0.5;
-                     const bg = isHalf ? 'linear-gradient(90deg, var(--accent) 50%, rgba(255,255,255,0.3) 50%)' : (i <= testimonials[testimonialIndex].stars ? 'var(--accent)' : 'rgba(255,255,255,0.3)');
-                     return <div key={i} style={{ width: 14, height: 14, background: bg, clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }} />
+                    const isHalf = testimonials[testimonialIndex].stars === i - 0.5;
+                    const bg = isHalf ? 'linear-gradient(90deg, var(--accent) 50%, rgba(255,255,255,0.3) 50%)' : (i <= testimonials[testimonialIndex].stars ? 'var(--accent)' : 'rgba(255,255,255,0.3)');
+                    return <div key={i} style={{ width: 14, height: 14, background: bg, clipPath: 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)' }} />
                   })}
                 </div>
                 <div style={{ minHeight: '110px', display: 'flex', alignItems: 'center' }}>
                   <p style={{ color: 'var(--white)', fontSize: 18, fontWeight: '600', lineHeight: 1.5, margin: '0 0 24px 0' }}>"{testimonials[testimonialIndex].text}"</p>
                 </div>
-                
+
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                     <img style={{ width: 48, height: 48, borderRadius: '50%', border: '2px solid var(--accent)', objectFit: 'cover' }} src={testimonials[testimonialIndex].image} alt={testimonials[testimonialIndex].name} onError={(e) => { e.target.onerror = null; e.target.src = testimonials[testimonialIndex].fallback }} />
@@ -262,6 +267,7 @@ function App() {
           </div>
         </div>
       </section>
+
 
       {/* METHOD SECTION */}
       <section id="method" className="section-padding" style={{ width: '100%', background: 'var(--bg-light)', padding: '96px 5%', display: 'flex', justifyContent: 'center' }}>
@@ -389,12 +395,10 @@ function App() {
       </footer>
 
       {/* Scroll to Top Button */}
-      <button 
+      <button
         className="scroll-to-top"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-        style={{ 
-          opacity: showScroll ? 1 : 0, pointerEvents: showScroll ? 'auto' : 'none',
-        }}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        style={{ opacity: showScroll ? 1 : 0, pointerEvents: showScroll ? 'auto' : 'none' }}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
       </button>
