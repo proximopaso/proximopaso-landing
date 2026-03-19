@@ -184,7 +184,10 @@ function App() {
 
             <div className="footer-grid">
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <h3 style={{ color: 'var(--bg-light)', fontSize: 20, fontWeight: '800', margin: 0 }}>Próximo Paso</h3>
+                <div style={{display: 'flex', flexDirection: 'row', gap: 16}}>
+                  <img alt={"logo"} src={"./logo.png"}></img>
+                  <h3 style={{ color: 'var(--bg-light)', fontSize: 20, fontWeight: '800', margin: 0 }}>Próximo Paso</h3>
+                </div>
                 <p style={{ color: 'var(--white-60)', fontSize: 14, margin: 0 }}>El puente definitivo entre tu vida universitaria peruana y tu primer rol profesional de éxito.</p>
               </div>
 
