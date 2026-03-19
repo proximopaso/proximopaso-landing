@@ -99,7 +99,7 @@ function App() {
           <div style={{ maxWidth: 1280, width: '100%', display: 'flex', flexDirection: 'column', gap: 64 }}>
             <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
               <h2 style={{ color: 'var(--primary)', fontSize: 'clamp(28px, 4vw, 36px)', fontWeight: '900', margin: 0 }}>¿Por qué Próximo Paso?</h2>
-              <p style={{ color: 'var(--text-gray)', fontSize: 18, maxWidth: 600, margin: 0 }}>Construye tu empleabilidad desde el primer cycle, no esperes a graduarte</p>
+              <p style={{ color: 'var(--text-gray)', fontSize: 18, maxWidth: 600, margin: 0 }}>Construye tu empleabilidad desde el primer ciclo, no esperes a graduarte</p>
             </div>
 
             <div className="grid-3">
@@ -113,7 +113,7 @@ function App() {
                       {card.logo}
                     </div>
                     <h3 style={{ color: 'var(--primary)', fontSize: 20, fontWeight: '700', margin: 0 }}>{card.title}</h3>
-                    <p style={{ color: 'var(--text-gray)', fontSize: 16, lineHeight: 1.6, margin: 0 }}>{card.desc}</p>
+                    <p style={{ color: 'var(--text-gray)', fontSize: 13, lineHeight: 1.6, margin: 0 }}>{card.desc}</p>
                   </div>
               ))}
             </div>
