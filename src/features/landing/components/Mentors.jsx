@@ -9,7 +9,7 @@ const mentorsList = [
             "Enfoque en Finanzas Corporativas y crecimiento profesional",
             "Perfil analítico y orientado a resultados"
         ],
-        image: "/mentor1.jpeg",
+        image: "/mentor2.jpeg",
         imagePosition: "center 15%" // Ajuste para alinear el rostro
     },
     {
@@ -21,7 +21,7 @@ const mentorsList = [
             "Gerente de Gestión Humana – LAIVE S.A.",
             "TOP HR Influencer Perú 2024–2025"
         ],
-        image: "/mentor2.jpeg",
+        image: "/mentor1.jpeg",
         imagePosition: "center 10%" // Ajuste para alinear el rostro
     },
     {
@@ -258,23 +258,23 @@ export const Mentors = () => {
 
                                     {isSelected && (
                                         <div style={{ marginTop: 32, animation: 'slideUp 0.8s ease forwards' }}>
-                                            
+
                                             {/* Bullet Points Rendering */}
-                                            <ul style={{ 
-                                                listStyle: 'none', 
-                                                padding: 0, 
-                                                margin: '0 0 40px 0', 
-                                                display: 'flex', 
-                                                flexDirection: 'column', 
-                                                gap: 16 
+                                            <ul style={{
+                                                listStyle: 'none',
+                                                padding: 0,
+                                                margin: '0 0 40px 0',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: 16
                                             }}>
                                                 {mentor.details.map((detail, idx) => (
-                                                    <li key={idx} style={{ 
-                                                        color: 'var(--white-80)', 
-                                                        fontSize: 16, 
-                                                        lineHeight: 1.5, 
-                                                        display: 'flex', 
-                                                        alignItems: 'flex-start', 
+                                                    <li key={idx} style={{
+                                                        color: 'var(--white-80)',
+                                                        fontSize: 16,
+                                                        lineHeight: 1.5,
+                                                        display: 'flex',
+                                                        alignItems: 'flex-start',
                                                         gap: 12,
                                                         fontWeight: '500'
                                                     }}>
