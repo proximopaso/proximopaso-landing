@@ -244,3 +244,90 @@ body {
     right: 24px;
   }
 }
+
+/* --- HERO COMPONENT RESPONSIVE --- */
+.hero-image-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: 600px;
+  z-index: 5;
+}
+
+.hero-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 32px;
+  overflow: hidden;
+  border: 1px solid var(--white-20);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+.hero-overlay-social {
+  position: absolute;
+  bottom: 60px;
+  left: -60px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 300px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.hero-overlay-emotional {
+  position: absolute;
+  top: 40px;
+  right: -40px;
+  padding: 16px 24px;
+  background: rgba(12, 96, 116, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.hero-testimonial-badge {
+  position: absolute;
+  bottom: -15px;
+  right: -20px;
+  background: var(--white);
+  padding: 16px 24px;
+  border-radius: 24px;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 15;
+}
+
+@media (max-width: 768px) {
+  .hero-image-wrapper {
+    height: 380px;
+  }
+
+  .hero-overlay-social {
+    bottom: 16px;
+    left: 10px;
+    width: calc(100% - 20px);
+    max-width: 260px;
+    padding: 16px;
+  }
+
+  .hero-overlay-emotional {
+    top: 16px;
+    right: 10px;
+  }
+
+  .hero-testimonial-badge {
+    bottom: -24px;
+    right: 10px;
+    padding: 12px 16px;
+  }
+}
